@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -17,9 +20,14 @@ public class UserController {
   }
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
-  public ResponseEntity UserRegister(@RequestBody @Valid UserEntity userEntity) {
-    userService.registerUser(userEntity);
-    return ResponseEntity.ok().build();
+  public ResponseEntity UserRegister(@RequestBody @Valid UserEntity newUserEntity) {
+    List<UserEntity> userList = userService.getUsers();
+    Map<String,String> userMap = userList.stream().collect(Collectors.toMap(UserEntity::getUsername, UserEntity::getPassword));
+    if (userMap.get(newUserEntity.getUsername()) == null){
+      userService.registerUser(newUserEntity);
+      return ResponseEntity.ok().build();
+    }
+    return ResponseEntity.badRequest().body("用户已存在");
   }
 
   @RequestMapping(value = "/users", method = RequestMethod.GET)
