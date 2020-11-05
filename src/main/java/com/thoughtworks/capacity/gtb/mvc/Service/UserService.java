@@ -6,6 +6,7 @@ import	java.util.Map;
 import java.util.stream.Collectors;
 
 import com.thoughtworks.capacity.gtb.mvc.Entity.UserEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,4 +27,30 @@ public class UserService {
   public List<UserEntity> getUsers() {
       return userEntityMap.values().stream().collect(Collectors.toList());
   }
+
+  public Map<String,String> getUserMap(){
+    List<UserEntity> userList = this.getUsers();
+    return userList.stream().collect(Collectors.toMap(UserEntity::getUsername, UserEntity::getPassword));
+  }
+
+  public boolean ifUserExist(String username){
+    Map<String,String> userMap = this.getUserMap();
+    if (userMap.get(username) == null){
+      return true;
+    }
+    return false;
+  }
+
+  public boolean ifPasswordRight(String username, String password){
+    Map<String,String> userMap = this.getUserMap();
+    if(!this.ifUserExist(username)){
+      String user = userMap.get(username);
+      if (userMap.get(username).equals(password)){
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
 }
