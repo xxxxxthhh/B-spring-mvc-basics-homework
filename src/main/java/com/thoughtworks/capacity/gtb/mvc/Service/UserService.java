@@ -17,10 +17,10 @@ public class UserService {
     userEntityMap.put(2, new UserEntity("NicoleBMYY","133328","xutianhao1994@163.com"));
   }
 
-  public int registerUser(UserEntity userEntity) {
+  public void registerUser(UserEntity userEntity) {
     int size = userEntityMap.size();
     userEntityMap.put(size+1, userEntity);
-    return userEntityMap.size();
+    // return userEntityMap.size();
   }
 
   public List<UserEntity> getUsers() {

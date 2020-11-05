@@ -18,7 +18,8 @@ public class UserController {
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   public ResponseEntity UserRegister(@RequestBody @Valid UserEntity userEntity) {
-    return ResponseEntity.ok().body(userService.registerUser(userEntity));
+    userService.registerUser(userEntity);
+    return ResponseEntity.ok().build();
   }
 
   @RequestMapping(value = "/users", method = RequestMethod.GET)
