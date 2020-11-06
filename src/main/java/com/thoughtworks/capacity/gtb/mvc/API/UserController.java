@@ -1,5 +1,6 @@
 package com.thoughtworks.capacity.gtb.mvc.API;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thoughtworks.capacity.gtb.mvc.Entity.UserEntity;
 import com.thoughtworks.capacity.gtb.mvc.Service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class UserController {
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.GET)
-  public ResponseEntity UserLogin(@RequestParam("username") String userName, @RequestParam("password") String passWord){
+  public ResponseEntity UserLogin(@RequestParam("username") String userName, @RequestParam("password") String passWord) throws JsonProcessingException {
     if (userService.ifUserExist(userName)){
       return ResponseEntity.badRequest().body("用户名错误请重试");
     }
     if (userService.ifPasswordRight(userName, passWord)){
-
-      return ResponseEntity.ok().body("登录成功");
+      String userInfo = userService.loginUserEntity(userName);
+      return ResponseEntity.ok().body(userInfo);
     }
     return ResponseEntity.badRequest().body("密码错误");
   }

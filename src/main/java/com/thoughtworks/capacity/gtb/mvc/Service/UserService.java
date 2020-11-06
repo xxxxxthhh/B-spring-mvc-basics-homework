@@ -1,10 +1,13 @@
 package com.thoughtworks.capacity.gtb.mvc.Service;
 import java.io.Console;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import	java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.capacity.gtb.mvc.Entity.UserEntity;
 import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +52,6 @@ public class UserService {
   public boolean ifPasswordRight(String username, String password){
     Map<String,String> userMap = this.getUserMap();
     if(!this.ifUserExist(username)){
-      String user = userMap.get(username);
       if (userMap.get(username).equals(password)){
         return true;
       }
@@ -58,4 +60,19 @@ public class UserService {
     return false;
   }
 
+  public String loginUserEntity(String username) throws JsonProcessingException {
+    Collection<UserEntity> userEntities =  userEntityMap.values();
+    for (UserEntity user : userEntities){
+      if (user.getUsername().equals(username)){
+        return entityToJson(user);
+      }
+    }
+    return null;
+  }
+
+  public String entityToJson(UserEntity userEntity) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    String json = objectMapper.writeValueAsString(userEntity);
+    return json;
+  }
 }
