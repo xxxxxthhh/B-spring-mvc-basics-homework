@@ -36,10 +36,10 @@ class UserControllerTest {
 
   @Test
   void userRegister() throws Exception {
-    UserEntity userEntity = new UserEntity("abcdasa","abcdef","ashdsjao@163.com");
+    UserEntity userEntity = UserEntity.builder().username("abcdasa").password("adasdsad").build();
     ObjectMapper objectMapper = new ObjectMapper();
     String json = objectMapper.writeValueAsString(userEntity);
-    mockMvc.perform(post("/register").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    mockMvc.perform(post("/register").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
   }
 
   @Test

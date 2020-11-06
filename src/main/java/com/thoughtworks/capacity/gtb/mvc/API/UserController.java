@@ -24,7 +24,7 @@ public class UserController {
   public ResponseEntity UserRegister(@RequestBody @Valid UserEntity newUserEntity) {
     if (userService.ifUserExist(newUserEntity.getUsername())){
       userService.registerUser(newUserEntity);
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(201).build();
     }
     return ResponseEntity.badRequest().body("用户已存在");
   }
@@ -40,6 +40,7 @@ public class UserController {
       return ResponseEntity.badRequest().body("用户名错误请重试");
     }
     if (userService.ifPasswordRight(userName, passWord)){
+
       return ResponseEntity.ok().body("登录成功");
     }
     return ResponseEntity.badRequest().body("密码错误");

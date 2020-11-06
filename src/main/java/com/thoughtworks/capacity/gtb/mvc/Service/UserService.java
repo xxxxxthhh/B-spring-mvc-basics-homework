@@ -6,6 +6,7 @@ import	java.util.Map;
 import java.util.stream.Collectors;
 
 import com.thoughtworks.capacity.gtb.mvc.Entity.UserEntity;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +15,18 @@ public class UserService {
   private Map<Integer, UserEntity> userEntityMap = new HashMap<>();
 
   public UserService(){
-    userEntityMap.put(1, new UserEntity("KyleTwSeaCd","132928","xutianhao1994@163.com"));
-    userEntityMap.put(2, new UserEntity("NicoleBMYY","133328","xutianhao1994@163.com"));
+    userEntityMap.put(1, new UserEntity(1,"KyleTwSeaCd","132928","xutianhao1994@163.com"));
+    userEntityMap.put(2, new UserEntity(2,"NicoleBMYY","133328","xutianhao1994@163.com"));
   }
 
   public void registerUser(UserEntity userEntity) {
     int size = userEntityMap.size();
-    userEntityMap.put(size+1, userEntity);
-    // return userEntityMap.size();
+    UserEntity entity = UserEntity.builder()
+        .userId(size+1)
+        .username(userEntity.getUsername())
+        .password(userEntity.getPassword())
+        .email(userEntity.getEmail()).build();
+    userEntityMap.put(size+1, entity);
   }
 
   public List<UserEntity> getUsers() {

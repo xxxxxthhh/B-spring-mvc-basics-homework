@@ -13,6 +13,9 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
+  @Generated
+  private Integer userId;
+
   @NotNull(message = "用户名不为空")
   // @Length(min = 3, max = 10)
   @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9_]{3,10}$", message = "用户名不合法")
